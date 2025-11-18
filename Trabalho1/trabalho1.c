@@ -277,14 +277,11 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
            
             if(count + 1 < 30) { 
                 posicoes[count++] = char_pos_start + 1;
-                posicoes[count++] = char_pos_start + lenBusca; // O tamanho da busca é de caracteres ASCII, o que simplifica o cálculo do fim.
+                posicoes[count++] = char_pos_start + lenBusca;
             }
         }
         
-        // Se o byte atual for o início de um caractere multibyte,
-        // avançamos 'i' mais um byte para evitar que a próxima iteração
-        // cheque o byte de continuação como um novo caractere,
-        // o que desalinhou o índice em tentativas anteriores.
+        
         if (match == 0 && ((unsigned char)strTexto[i]) >= 192) {
             i++; 
         }
