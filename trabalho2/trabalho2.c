@@ -90,6 +90,7 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
+    int a;
     int retorno = SUCESSO;
     return retorno;
 }
