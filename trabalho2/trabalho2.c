@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define TAM 10
-
 #include "trabalho2.h"
+
+typedef struct {
+    int *elementos;
+    int tamanhoMax;
+    int qntdElementos;
+} EstruturaAuxiliar;
+
+EstruturaAuxiliar vetorPrincipal[TAM];
+
 
 int vetorPrincipal[TAM];
 
@@ -19,20 +27,23 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-
-    int retorno = 0;
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
-    // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
-    // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
-    // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
-    // deu tudo certo, crie
-    retorno = SUCESSO;
-
-    return retorno;
+    if (ehPosicaoValida(posicao)!= SUCESSO){
+        return POSICAO_INVALIDA;
+    }
+    int indice = posicao - 1;
+    if (tamanho < 1) {
+        return TAMANHO_INVALIDO;
+    }
+    if (vetorPrincipal[indice].elementos != NULL){
+        return JA_TEM_ESTRUTURA_AUXILIAR;
+    }
+    vetorPrincipal[indice].elementos = (int *) malloc(tamanho * sizeof(int));
+    if (vetorPrincipal[indice].elementos == NULL){
+        return SEM_ESPACO_DE_MEMORIA;
+    }
+    vetorPrincipal[indice].tamanhoMax = tamanho;
+    vetorPrincipal[indice].qntdElementos = 0;
+    return SUCESSO;
 }
 
 /*
@@ -46,37 +57,20 @@ CONSTANTES
 */
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
-    int retorno = 0;
-    int existeEstruturaAuxiliar = 0;
-    int temEspaco = 0;
-    int posicao_invalida = 0;
-
-    if (posicao_invalida)
-        retorno = POSICAO_INVALIDA;
-    else
-    {
-        // testar se existe a estrutura auxiliar
-        if (existeEstruturaAuxiliar)
-        {
-            if (temEspaco)
-            {
-                //insere
-                retorno = SUCESSO;
-            }
-            else
-            {
-                retorno = SEM_ESPACO;
-            }
-        }
-        else
-        {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
-        }
+    if (ehPosicaoValida(posicao)!= SUCESSO){
+        return POSICAO_INVALIDA;
     }
-
-    return retorno;
+    int indice = posicao - 1;
+    if (vetorPrincipal[indice].elementos == NULL){
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+    if (vetorPrincipal[indice].qntdElementos >= vetorPrincipal[indice].tamanhoMax){
+        return SEM_ESPACO;
+    }
+    vetorPrincipal[indice].elementos{vetorPrincipal[indice].qntdElementos} = valor;
+    vetorPrincipal[indice].qntdElementos++;
+    return SUCESSO;
 }
-
 /*
 Objetivo: excluir o numero 'valor' da estrutura auxiliar no final da estrutura.
 ex: suponha os valores [3, 8, 7, 9,  ,  ]. Após excluir, a estrutura deve ficar da seguinte forma [3, 8, 7,  ,  ,  ].
@@ -90,7 +84,7 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int a;
+
     int retorno = SUCESSO;
     return retorno;
 }
@@ -117,15 +111,15 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao)
 {
-    int retorno = 0;
-    if (posicao < 1 || posicao > 10)
-    {
-        retorno = POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > TAM){
+        return POSICAO_INVALIDA;
     }
-    else
-        retorno = SUCESSO;
-
-    return retorno;
+    return SUCESSO;
+}
+void dobrar (int * x) {
+    if ( x != NULL){
+        *x *= 2;
+    }
 }
 /*
 Objetivo: retorna os números da estrutura auxiliar da posição 'posicao (1..10)'.
@@ -266,6 +260,12 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 void inicializar()
 {
+    int i;
+    for (i = 0; i < TAM; i++){
+        vetorPrincipal[i].elementos = NULL;
+        vetorPrincipal[i].tamanhoMax = 0;
+        vetorPrincipal[i].qntdElementos = 0;
+    }
 }
 
 /*
@@ -276,4 +276,10 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
+    for(int i = 0; i < TAM; i++){
+        if(vetorPrincipal[i].elementos != NULL){
+            free(vetorPrincipal[i].elementos);
+            vetorPrincipal[i].elementos = NULL;
+        }
+    }
 }
