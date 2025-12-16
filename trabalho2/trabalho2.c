@@ -247,6 +247,7 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
             vetorAux[k++] = vetorPrincipal[i].elementos[j];
         }
     }
+    return SUCESSO;
 }
 
 /*
