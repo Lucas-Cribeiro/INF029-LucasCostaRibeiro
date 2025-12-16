@@ -5,6 +5,9 @@
 
 void inicializar();
 void finalizar();
+int ehPosicaoValida(int posicao);
+void dobrar (int * x);
+void ordenarVetor(int *vetor, int tamanho);
 
 
 typedef struct {
@@ -188,7 +191,8 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
     return SUCESSO;
 }
 
-void ordenarVetor(int *vetor, int tamanho){
+void ordenarVetor(int *vetor, int tamanho)
+{
     int i, j, temp;
     for ( i = 1; i < tamanho; i++){
         temp = vetor[i];
@@ -372,7 +376,7 @@ No *montarListaEncadeadaComCabecote()
         free(cabecote);
         return NULL;
     }
-    for (i = 0; i < TAM; i++){
+    for (int i = 0; i < TAM; i++){
         for (int j = 0; j < vetorPrincipal[i].qntdElementos; j++){
             No *novoNo = (No *) malloc(sizeof(No));
             if(novoNo == NULL){
